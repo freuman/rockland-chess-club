@@ -1,107 +1,85 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { CalendarIcon, ClockIcon } from '@heroicons/react/24/outline'
-import { categoryLabels } from '@/data/events'
-import { formatDate, formatTime } from '@/lib/utils'
-import type { Event } from '@/types'
+import { chess67 } from '@/lib/chess67'
 
-interface UpcomingEventsProps {
-  events: Event[]
-}
+const rhythm = [
+  {
+    when: 'Every Thursday',
+    what: 'Social Chess Games',
+    detail: 'Casual games, instruction for beginners, and friendly competition. 7:00–9:00 PM.',
+  },
+  {
+    when: 'Monthly',
+    what: 'Tournaments',
+    detail: 'Rated and unrated events for players who want a bit more on the line.',
+  },
+  {
+    when: 'Seasonally',
+    what: 'Chess Classes',
+    detail: 'Structured five-week sessions for kids and adults, taught by club members.',
+  },
+]
 
-export default function UpcomingEvents({ events }: UpcomingEventsProps) {
-  const nextThreeEvents = events.slice(0, 3)
-  
-  // Don't render anything if no events
-  if (nextThreeEvents.length === 0) {
-    return null
-  }
-
+export default function UpcomingEvents() {
   return (
-    <section className="py-24 bg-gradient-to-br from-amber-50 via-cream to-burgundy-50 relative paper-texture">
-      {/* Classical decorative divider */}
-      <div className="classical-divider mb-16"></div>
-      
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mx-auto max-w-2xl text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold text-burgundy-800 sm:text-5xl" style={{fontFamily: 'var(--font-playfair)'}}>
-            Upcoming Gatherings
+    <section className="bg-gradient-to-br from-amber-50 via-cream to-burgundy-50 py-20 paper-texture">
+      <div className="mx-auto max-w-5xl px-6 lg:px-8">
+        <div className="text-center">
+          <h2
+            className="text-3xl font-bold text-burgundy-800 sm:text-4xl"
+            style={{ fontFamily: 'var(--font-playfair)' }}
+          >
+            What&rsquo;s On
           </h2>
-          <p className="mt-6 text-xl leading-8 text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
-            Join us for our upcoming chess events and friendly competitions
+          <p
+            className="mx-auto mt-4 max-w-2xl text-lg text-forest-700"
+            style={{ fontFamily: 'var(--font-baskerville)' }}
+          >
+            Our week has a steady rhythm. The full calendar, with dates and registration,
+            lives on Chess67.
           </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {nextThreeEvents.map((event, index) => (
-            <motion.div
-              key={event.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="elegant-card h-full p-8 hover:shadow-elegant transition-all duration-300 group">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="chess-piece-decoration text-2xl text-amber-600 group-hover:scale-110 transition-transform duration-300">
-                    ♔
-                  </span>
-                  <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium border-2 ${
-                    event.category === 'tournament' 
-                      ? 'bg-burgundy-100 text-burgundy-800 border-burgundy-300'
-                      : event.category === 'classes'
-                      ? 'bg-forest-100 text-forest-800 border-forest-300'
-                      : 'bg-amber-100 text-amber-800 border-amber-300'
-                  }`} style={{fontFamily: 'var(--font-playfair)'}}>
-                    {categoryLabels[event.category]}
-                  </span>
-                </div>
-                
-                <h3 className="text-2xl font-bold text-burgundy-800 mb-4" style={{fontFamily: 'var(--font-playfair)'}}>
-                  {event.title}
-                </h3>
-                
-                <div className="flex flex-col space-y-2 mb-6 text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
-                  <div className="flex items-center">
-                    <CalendarIcon className="h-5 w-5 mr-2 text-amber-600" />
-                    {formatDate(event.date)}
-                  </div>
-                  <div className="flex items-center">
-                    <ClockIcon className="h-5 w-5 mr-2 text-amber-600" />
-                    {formatTime(event.time)}
-                  </div>
-                </div>
-                
-                <p className="text-burgundy-700 leading-relaxed" style={{fontFamily: 'var(--font-baskerville)'}}>
-                  {event.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="mt-16 text-center"
-        >
-          <Link href="/events" 
-                className="inline-flex items-center px-10 py-4 border-2 border-amber-500 text-burgundy-700 rounded-lg hover:bg-amber-100 transition-all duration-300 group"
-                style={{fontFamily: 'var(--font-playfair)'}}>
-            <span className="font-semibold text-lg">View All Events</span>
-            <span className="chess-piece-decoration text-base ml-2 group-hover:rotate-12 transition-transform duration-300">♔</span>
+        <dl className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {rhythm.map((item) => (
+            <div key={item.what} className="elegant-card p-7">
+              <dt>
+                <span
+                  className="block text-xs font-bold uppercase tracking-widest text-amber-700"
+                  style={{ fontFamily: 'var(--font-baskerville)' }}
+                >
+                  {item.when}
+                </span>
+                <span
+                  className="mt-2 block text-xl font-bold text-burgundy-800"
+                  style={{ fontFamily: 'var(--font-playfair)' }}
+                >
+                  {item.what}
+                </span>
+              </dt>
+              <dd
+                className="mt-3 text-forest-700"
+                style={{ fontFamily: 'var(--font-baskerville)' }}
+              >
+                {item.detail}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Link href="/events" className="btn-classical px-9 py-4 text-lg">
+            View the calendar
           </Link>
-        </motion.div>
+          <a
+            href={chess67.club}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-lg border-2 border-amber-500 px-9 py-4 text-lg font-semibold text-burgundy-700 transition-colors duration-300 hover:bg-amber-100"
+            style={{ fontFamily: 'var(--font-playfair)' }}
+          >
+            Our club on Chess67
+          </a>
+        </div>
       </div>
     </section>
   )

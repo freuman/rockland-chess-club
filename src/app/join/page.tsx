@@ -1,349 +1,250 @@
 'use client'
 
+import Link from 'next/link'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion'
-import { useEffect } from 'react'
-
-const membershipBenefits = [
-  'Access to all regular club meetings',
-  'Priority registration for tournaments',
-  'Discounted tournament entry fees', 
-  'Access to club library and resources',
-  'Opportunities for rated tournament play',
-  'Free basic chess instruction',
-  'Friendly community of chess enthusiasts',
-  'Equipment provided (boards, sets, clocks)',
-]
-
-const pricingOptions = [
-  {
-    name: 'Annual Membership',
-    price: '$100',
-    period: 'per year',
-    description: 'Best value for regular attendees',
-    features: membershipBenefits,
-    recommended: true,
-    zeffyFormLink: 'https://www.zeffy.com/embed/ticketing/904a5273-861e-4aa0-ba62-16d4df387e95?modal=true'
-  },
-  {
-    name: 'Monthly Membership', 
-    price: '$10',
-    period: 'per month',
-    description: 'Perfect for trying us out',
-    features: membershipBenefits,
-    recommended: false,
-    zeffyFormLink: 'https://www.zeffy.com/embed/ticketing/904a5273-861e-4aa0-ba62-16d4df387e95?modal=true'
-  },
-  {
-    name: 'Drop-in Rate',
-    price: '$10',
-    period: 'per visit',
-    description: 'Casual attendance option',
-    features: [
-      "Access to that day's activities",
-      'Equipment provided',
-      'Casual games and instruction',
-      'Meet the community'
-    ],
-    recommended: false,
-    note: 'Pay at the door - cash or card accepted'
-  }
-]
+import { chess67, membershipTiers } from '@/lib/chess67'
 
 const faqs = [
   {
-    question: "Can I just show up without registering?",
-    answer: "Yes! No reservation needed. Just drop in any Thursday between 7-9 PM. Pay $10 at the door and you're ready to play. We'll introduce you around and find you a game."
+    question: 'Can I just show up without registering?',
+    answer:
+      "Yes. No reservation needed — drop in any Thursday between 7 and 9 PM. Pay $10 at the door and you're ready to play. We'll introduce you around and find you a game.",
   },
   {
     question: "I've never played chess before. Is that okay?",
-    answer: "Absolutely! Complete beginners are welcome. We have patient members who enjoy teaching newcomers. We'll show you how the pieces move and get you playing your first game."
+    answer:
+      "Absolutely. Complete beginners are welcome. We have patient members who enjoy teaching newcomers — we'll show you how the pieces move and get you playing your first game.",
   },
   {
-    question: "Do I need to bring my own chess set?",
-    answer: "No, we provide all equipment including chess sets, boards, and clocks. Just bring yourself!"
+    question: 'How do I actually become a member?',
+    answer:
+      'Membership is handled on Chess67, where our club keeps its roster and calendar. Choose a tier above, create a free Chess67 account if you do not have one, and join the group. Your membership is active immediately.',
   },
   {
-    question: "What should I expect on my first visit?",
-    answer: "Arrive anytime during our hours (7-9 PM Thursdays). We'll greet you, explain how things work, and pair you with someone at your level. Expect friendly games, helpful tips, and a welcoming atmosphere."
+    question: 'Do I need to bring my own chess set?',
+    answer:
+      'No. We provide all equipment including sets, boards, and clocks. Just bring yourself.',
   },
   {
-    question: "Is parking available?",
-    answer: "Yes, there's street parking on Main St. and nearby municipal lots. The venue is on the 3rd floor — take the elevator or stairs from the main entrance."
+    question: 'What should I expect on my first visit?',
+    answer:
+      "Arrive anytime during our hours. We'll greet you, explain how things work, and pair you with someone at your level. Expect friendly games, helpful tips, and a welcoming atmosphere.",
   },
   {
-    question: "What age groups participate?",
-    answer: "Our club welcomes all ages! We have members from age 8 to 80+, creating a diverse and enriching community where everyone learns from each other."
+    question: 'Is parking available?',
+    answer:
+      'Yes — street parking on Main St. and nearby municipal lots. The venue is on the 3rd floor; take the elevator or stairs from the main entrance.',
   },
   {
-    question: "Are there opportunities for competitive play?",
-    answer: "Yes, we host monthly tournaments and many members participate in rated tournament play. But there's no pressure — most of our time is casual, friendly games."
-  }
+    question: 'What age groups participate?',
+    answer:
+      'All ages. We have members from 8 to 80+, which makes for a genuinely enriching mix of people across the boards.',
+  },
+  {
+    question: 'Are there opportunities for competitive play?',
+    answer:
+      "Yes — we host monthly tournaments and many members play rated chess. But there's no pressure; most of our time is casual, friendly games.",
+  },
 ]
 
 export default function JoinPage() {
-  useEffect(() => {
-    // Check if Zeffy script is loaded and working
-    const checkZeffy = () => {
-      console.log('Checking for Zeffy script...')
-      console.log('Window.Zeffy:', (window as Window & { Zeffy?: unknown }).Zeffy)
-      console.log('Document scripts:', Array.from(document.scripts).filter(s => s.src.includes('zeffy')))
-    }
-    
-    // Check immediately and after a delay
-    checkZeffy()
-    setTimeout(checkZeffy, 2000)
-  }, [])
-
   return (
     <div className="bg-gradient-to-br from-amber-50 via-cream to-burgundy-50 paper-texture">
-      {/* Hero Section */}
-      <div className="px-6 pt-24 pb-12 sm:pt-32 sm:pb-16 lg:px-8">
+      <div className="px-6 pt-20 pb-10 sm:pt-24 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl font-bold tracking-tight text-burgundy-800 sm:text-6xl" 
-            style={{fontFamily: 'var(--font-playfair)'}}
+          <h1
+            className="text-4xl font-bold tracking-tight text-burgundy-800 sm:text-5xl"
+            style={{ fontFamily: 'var(--font-playfair)' }}
           >
-            Join Our Chess Family
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-6 text-lg leading-8 text-forest-700" 
-            style={{fontFamily: 'var(--font-baskerville)'}}
+            Join the Club
+          </h1>
+          <p
+            className="mt-5 text-lg leading-8 text-forest-700"
+            style={{ fontFamily: 'var(--font-baskerville)' }}
           >
-            Flexible membership options to fit your schedule and commitment level
-          </motion.p>
+            Come for a night or join for the year. Either way, you&rsquo;re welcome at the board.
+          </p>
         </div>
       </div>
 
-      {/* Pricing Section */}
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        {/* Classical decorative divider */}
-        <div className="classical-divider mb-16"></div>
-        
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mx-auto max-w-4xl text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold text-burgundy-800 sm:text-5xl" style={{fontFamily: 'var(--font-playfair)'}}>
-            Membership Options
-          </h2>
-          <p className="mt-6 text-xl leading-8 text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
-            Choose the option that works best for you. All members get access to our full community and activities.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 items-start">
-          {pricingOptions.map((option, index) => (
-            <motion.div
-              key={option.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className={`relative elegant-card p-8 ${
-                option.recommended
-                  ? 'border-4 border-burgundy-600 ring-4 ring-burgundy-200 bg-gradient-to-br from-burgundy-50 via-amber-50 to-cream shadow-2xl scale-105 lg:-mt-4 lg:mb-4 z-10'
-                  : ''
-              } hover:shadow-elegant transition-all duration-300 group`}
+      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+        <section id="pricing" className="scroll-mt-24">
+          <div className="mx-auto mb-12 max-w-3xl text-center">
+            <h2
+              className="text-3xl font-bold text-burgundy-800 sm:text-4xl"
+              style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              {option.recommended && (
-                <>
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex items-center rounded-full bg-burgundy-600 px-6 py-2 text-base font-bold shadow-lg" style={{fontFamily: 'var(--font-playfair)', color: 'var(--cream)'}}>
-                      ♔ Best Value ♔
-                    </span>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <span className="inline-block bg-amber-400 text-burgundy-800 text-xs font-bold px-2 py-1 rounded" style={{fontFamily: 'var(--font-baskerville)'}}>
-                      Save $20/year
-                    </span>
-                  </div>
-                </>
-              )}
-              
-              <div className="text-center mb-8">
-                <div className="chess-piece-decoration text-3xl text-amber-600 mb-4 group-hover:scale-110 transition-transform duration-300">♔</div>
-                <h3 className="text-2xl font-bold text-burgundy-800 mb-2" style={{fontFamily: 'var(--font-playfair)'}}>{option.name}</h3>
-                <p className="text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>{option.description}</p>
-                <div className="mt-6">
-                  <span className="text-5xl font-bold text-burgundy-800" style={{fontFamily: 'var(--font-playfair)'}}>{option.price}</span>
-                  <span className="text-lg font-medium text-forest-600" style={{fontFamily: 'var(--font-baskerville)'}}>/{option.period}</span>
-                </div>
-              </div>
+              Membership Options
+            </h2>
+            <p
+              className="mt-4 text-lg leading-8 text-forest-700"
+              style={{ fontFamily: 'var(--font-baskerville)' }}
+            >
+              Memberships are managed on Chess67, where we keep our roster, calendar, and
+              registrations.
+            </p>
+          </div>
 
-              <ul className="space-y-3 mb-8">
-                {option.features.map((feature) => (
-                  <li key={feature} className="flex items-start">
-                    <CheckIcon className="h-6 w-6 text-amber-600 mt-0.5 mr-3 flex-shrink-0" />
-                    <span className="text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+          <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
+            {membershipTiers.map((tier, index) => (
+              <motion.div
+                key={tier.name}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                className={`elegant-card relative flex h-full flex-col p-8 ${
+                  tier.recommended
+                    ? 'border-2 border-burgundy-600 shadow-xl lg:-mt-3'
+                    : ''
+                }`}
+              >
+                {tier.recommended && (
+                  <span
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-burgundy-600 px-4 py-1 text-sm font-bold"
+                    style={{ fontFamily: 'var(--font-playfair)', color: 'var(--cream)' }}
+                  >
+                    Best value
+                  </span>
+                )}
 
-              {option.zeffyFormLink ? (
-                <button 
-                  zeffy-form-link={option.zeffyFormLink}
-                  className="btn-classical w-full text-lg px-8 py-4 group"
-                  onClick={() => {
-                    console.log('Zeffy link clicked:', option.zeffyFormLink)
-                    
-                    // Try multiple approaches for Zeffy modal
-                    const windowWithZeffy = window as Window & { 
-                      Zeffy?: { open?: (url: string) => void }
-                      zeffyModal?: (url: string) => void
-                    }
-                    
-                    if (windowWithZeffy.Zeffy?.open) {
-                      console.log('Using Zeffy API')
-                      windowWithZeffy.Zeffy.open(option.zeffyFormLink)
-                    } else if (windowWithZeffy.zeffyModal) {
-                      console.log('Using zeffyModal function')
-                      windowWithZeffy.zeffyModal(option.zeffyFormLink)
-                    } else {
-                      console.log('Zeffy script not found, opening in new window')
-                      // Fallback: open in new window
-                      const fallbackUrl = option.zeffyFormLink.replace('?modal=true', '')
-                      window.open(fallbackUrl, '_blank', 'width=800,height=900,scrollbars=yes,resizable=yes')
-                    }
-                  }}
-                >
-                  <span>Join Now</span>
-                  <span className="chess-piece-decoration text-base ml-2 group-hover:rotate-12 transition-transform duration-300">♔</span>
-                </button>
-              ) : (
                 <div className="text-center">
-                  <p className="text-forest-700 mb-4" style={{fontFamily: 'var(--font-baskerville)'}}>{option.note}</p>
-                  <button className="w-full px-8 py-4 border-2 border-amber-500 text-burgundy-700 rounded-lg hover:bg-amber-100 transition-all duration-300" style={{fontFamily: 'var(--font-playfair)'}} disabled>
-                    <span className="font-semibold">Pay at Door</span>
-                  </button>
+                  <h3
+                    className="text-2xl font-bold text-burgundy-800"
+                    style={{ fontFamily: 'var(--font-playfair)' }}
+                  >
+                    {tier.name}
+                  </h3>
+                  <p
+                    className="mt-2 text-forest-700"
+                    style={{ fontFamily: 'var(--font-baskerville)' }}
+                  >
+                    {tier.description}
+                  </p>
+                  <p className="mt-5">
+                    <span
+                      className="text-5xl font-bold text-burgundy-800"
+                      style={{ fontFamily: 'var(--font-playfair)' }}
+                    >
+                      {tier.price}
+                    </span>
+                    {tier.period && (
+                      <span
+                        className="ml-1 text-lg font-medium text-forest-600"
+                        style={{ fontFamily: 'var(--font-baskerville)' }}
+                      >
+                        {tier.period}
+                      </span>
+                    )}
+                  </p>
+                  {'saving' in tier && tier.saving && (
+                    <p
+                      className="mt-2 text-sm font-semibold text-amber-700"
+                      style={{ fontFamily: 'var(--font-baskerville)' }}
+                    >
+                      {tier.saving}
+                    </p>
+                  )}
                 </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
 
-        {/* Additional Info */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mt-16 elegant-card p-12 bg-gradient-to-br from-amber-100 to-cream"
-        >
-          <div className="text-center mb-8">
-            <div className="chess-piece-decoration text-4xl text-burgundy-600 mb-4">♔</div>
-            <h3 className="text-3xl font-bold text-burgundy-800" style={{fontFamily: 'var(--font-playfair)'}}>Why Join Our Club?</h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="text-center">
-              <div className="chess-piece-decoration text-2xl text-amber-600 mb-3">♕</div>
-              <h4 className="text-xl font-bold text-burgundy-800 mb-3" style={{fontFamily: 'var(--font-playfair)'}}>Community & Friendship</h4>
-              <p className="text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
-                Connect with fellow chess enthusiasts in a welcoming, supportive environment. 
-                Many of our members have formed lasting friendships beyond the chess board.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="chess-piece-decoration text-2xl text-amber-600 mb-3">♗</div>
-              <h4 className="text-xl font-bold text-burgundy-800 mb-3" style={{fontFamily: 'var(--font-playfair)'}}>Skill Development</h4>
-              <p className="text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
-                Improve your game through regular play, instruction, and analysis. 
-                Our experienced members are always happy to share knowledge and help you grow.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="chess-piece-decoration text-2xl text-amber-600 mb-3">♘</div>
-              <h4 className="text-xl font-bold text-burgundy-800 mb-3" style={{fontFamily: 'var(--font-playfair)'}}>Regular Activities</h4>
-              <p className="text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
-                Weekly meetings, monthly tournaments, puzzle sessions, and special events 
-                keep our calendar full of engaging chess activities.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="chess-piece-decoration text-2xl text-amber-600 mb-3">♖</div>
-              <h4 className="text-xl font-bold text-burgundy-800 mb-3" style={{fontFamily: 'var(--font-playfair)'}}>All Ages Welcome</h4>
-              <p className="text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
-                Our diverse membership spans all age groups, creating rich opportunities 
-                for intergenerational learning and mentorship.
-              </p>
-            </div>
-          </div>
-        </motion.div>
+                <ul className="mt-8 mb-8 flex-1 space-y-3">
+                  {tier.features.map((feature) => (
+                    <li key={feature} className="flex items-start">
+                      <CheckIcon className="mt-0.5 mr-3 h-5 w-5 flex-shrink-0 text-amber-600" />
+                      <span
+                        className="text-forest-700"
+                        style={{ fontFamily: 'var(--font-baskerville)' }}
+                      >
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
 
-        {/* FAQ Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mt-16"
-        >
-          <div className="classical-divider mb-16"></div>
-          <h2 className="text-4xl font-bold text-burgundy-800 text-center mb-12" style={{fontFamily: 'var(--font-playfair)'}}>
+                <a
+                  href={chess67.membership}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-full rounded-lg px-8 py-4 text-center text-lg font-semibold transition-all duration-300 ${
+                    tier.recommended
+                      ? 'btn-classical'
+                      : 'border-2 border-amber-500 text-burgundy-700 hover:bg-amber-100'
+                  }`}
+                  style={
+                    tier.recommended ? undefined : { fontFamily: 'var(--font-playfair)' }
+                  }
+                >
+                  {tier.price === 'Free' ? 'Join for free' : `Join — ${tier.price}`}
+                </a>
+              </motion.div>
+            ))}
+          </div>
+
+          <p
+            className="mt-8 text-center text-forest-600"
+            style={{ fontFamily: 'var(--font-baskerville)' }}
+          >
+            Prefer to pay at the door? Drop-in is $10 per visit, cash or card. No sign-up needed.
+          </p>
+        </section>
+
+        <section className="mt-20">
+          <div className="classical-divider mb-14"></div>
+          <h2
+            className="mb-10 text-center text-3xl font-bold text-burgundy-800 sm:text-4xl"
+            style={{ fontFamily: 'var(--font-playfair)' }}
+          >
             Frequently Asked Questions
           </h2>
-          <div className="max-w-3xl mx-auto">
-            <div className="space-y-8">
-              {faqs.map((faq, index) => (
-                <motion.div 
-                  key={index} 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="elegant-card p-6"
+          <div className="mx-auto max-w-3xl space-y-5">
+            {faqs.map((faq) => (
+              <div key={faq.question} className="elegant-card p-6">
+                <h3
+                  className="mb-2 text-xl font-bold text-burgundy-800"
+                  style={{ fontFamily: 'var(--font-playfair)' }}
                 >
-                  <h3 className="text-xl font-bold text-burgundy-800 mb-3" style={{fontFamily: 'var(--font-playfair)'}}>
-                    {faq.question}
-                  </h3>
-                  <p className="text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
-                    {faq.answer}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+                  {faq.question}
+                </h3>
+                <p
+                  className="text-forest-700"
+                  style={{ fontFamily: 'var(--font-baskerville)' }}
+                >
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
           </div>
-        </motion.div>
+        </section>
 
-        {/* CTA Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mt-16 text-center"
-        >
-          <div className="classical-divider mb-16"></div>
-          <h2 className="text-3xl font-bold text-burgundy-800 mb-4" style={{fontFamily: 'var(--font-playfair)'}}>
-            Ready to Join Our Chess Community?
+        <section className="mt-20 text-center">
+          <div className="classical-divider mb-14"></div>
+          <h2
+            className="mb-4 text-3xl font-bold text-burgundy-800"
+            style={{ fontFamily: 'var(--font-playfair)' }}
+          >
+            Still deciding?
           </h2>
-          <p className="text-forest-700 mb-8 max-w-2xl mx-auto text-lg" style={{fontFamily: 'var(--font-baskerville)'}}>
-            Choose your membership option above, or drop by one of our meetings to experience 
-            the Rockland County Chess Club firsthand. We can&apos;t wait to welcome you!
+          <p
+            className="mx-auto mb-8 max-w-2xl text-lg text-forest-700"
+            style={{ fontFamily: 'var(--font-baskerville)' }}
+          >
+            Come to a Thursday night first. Play a few games, meet people, and join later
+            if it feels right.
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <a href="#pricing" className="btn-classical text-lg px-10 py-4 group">
-              <span>Choose Membership</span>
-              <span className="chess-piece-decoration text-base ml-2 group-hover:rotate-12 transition-transform duration-300">♔</span>
-            </a>
-            <a href="/contact" 
-               className="inline-flex items-center px-10 py-4 border-2 border-amber-500 text-burgundy-700 rounded-lg hover:bg-amber-100 transition-all duration-300 group"
-               style={{fontFamily: 'var(--font-playfair)'}}
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            <Link href="/events" className="btn-classical px-9 py-4 text-lg">
+              See upcoming events
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center rounded-lg border-2 border-amber-500 px-9 py-4 text-lg font-semibold text-burgundy-700 transition-colors duration-300 hover:bg-amber-100"
+              style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              <span className="font-semibold text-lg">Ask Questions</span>
-              <span className="chess-piece-decoration text-base ml-2 group-hover:rotate-12 transition-transform duration-300">♕</span>
-            </a>
+              Ask a question
+            </Link>
           </div>
-        </motion.div>
+        </section>
       </div>
     </div>
   )

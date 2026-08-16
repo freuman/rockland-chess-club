@@ -4,23 +4,31 @@ import type { Event, Announcement, CommunityCard, NewsletterSubscriber, ContactS
 import { fallbackAnnouncements } from '@/data/announcements'
 import { fallbackCommunityCards } from '@/data/community-cards'
 
-// Initialize Airtable with validation
-if (!process.env.AIRTABLE_API_KEY) {
-  throw new Error('AIRTABLE_API_KEY environment variable is required')
-}
-if (!process.env.AIRTABLE_BASE_ID) {
-  throw new Error('AIRTABLE_BASE_ID environment variable is required')
+// Airtable is initialised lazily. Validating at module scope would throw during
+// `next build`, taking down the whole site for a missing key that only the
+// contact and newsletter routes actually need.
+function createBase() {
+  const apiKey = process.env.AIRTABLE_API_KEY
+  const baseId = process.env.AIRTABLE_BASE_ID
+
+  if (!apiKey) throw new Error('AIRTABLE_API_KEY environment variable is required')
+  if (!baseId) throw new Error('AIRTABLE_BASE_ID environment variable is required')
+
+  return new Airtable({ apiKey }).base(baseId)
 }
 
-const base = new Airtable({
-  apiKey: process.env.AIRTABLE_API_KEY,
-}).base(process.env.AIRTABLE_BASE_ID)
+let cachedBase: ReturnType<typeof createBase> | null = null
 
-const eventsTable = base(process.env.AIRTABLE_TABLE_NAME || 'Events')
-const announcementsTable = base('Announcements')
-const communityCardsTable = base('CommunityCards')
-const newsletterTable = base('Newsletter')
-const contactTable = base('Contact-Us')
+function getBase() {
+  if (!cachedBase) cachedBase = createBase()
+  return cachedBase
+}
+
+const eventsTable = () => getBase()(process.env.AIRTABLE_TABLE_NAME || 'Events')
+const announcementsTable = () => getBase()('Announcements')
+const communityCardsTable = () => getBase()('CommunityCards')
+const newsletterTable = () => getBase()('Newsletter')
+const contactTable = () => getBase()('Contact-Us')
 
 // Simple in-memory cache with TTL
 interface CacheEntry<T> {
@@ -194,7 +202,7 @@ const convertAirtableToContactSubmission = (record: AirtableContactRecord): Cont
 // Fetch all active events from Airtable
 export async function fetchEventsFromAirtable(): Promise<Event[]> {
   try {
-    const records = await eventsTable
+    const records = await eventsTable()
       .select({
         filterByFormula: "{Status} = 'Active'",
         sort: [{ field: 'Date', direction: 'asc' }],
@@ -261,7 +269,7 @@ function getNextWeekday(weekday: number, weeksFromNow: number = 0): Date {
 // Create a new event in Airtable (for future admin interface)
 export async function createEvent(eventData: Omit<Event, 'id'>): Promise<Event | null> {
   try {
-    const record = await eventsTable.create([
+    const record = await eventsTable().create([
       {
         fields: {
           Title: eventData.title,
@@ -293,7 +301,7 @@ export async function updateEvent(id: string, eventData: Partial<Event>): Promis
     if (eventData.description) updateFields.Description = eventData.description
     if (eventData.location) updateFields.Location = eventData.location
 
-    const record = await eventsTable.update([
+    const record = await eventsTable().update([
       {
         id,
         fields: updateFields
@@ -310,7 +318,7 @@ export async function updateEvent(id: string, eventData: Partial<Event>): Promis
 // Delete an event from Airtable (for future admin interface)
 export async function deleteEvent(id: string): Promise<boolean> {
   try {
-    await eventsTable.destroy([id])
+    await eventsTable().destroy([id])
     return true
   } catch (error) {
     console.error('Error deleting event from Airtable:', error)
@@ -329,7 +337,7 @@ export async function fetchAnnouncementsFromAirtable(): Promise<Announcement[]> 
   }
 
   try {
-    const records = await announcementsTable
+    const records = await announcementsTable()
       .select({
         filterByFormula: "{Status} = 'Active'",
         sort: [{ field: 'Priority', direction: 'asc' }],
@@ -364,7 +372,7 @@ export async function fetchCommunityCardsFromAirtable(): Promise<CommunityCard[]
   }
 
   try {
-    const records = await communityCardsTable
+    const records = await communityCardsTable()
       .select({
         filterByFormula: "{Status} = 'Active'",
         sort: [{ field: 'Order', direction: 'asc' }],
@@ -402,7 +410,7 @@ function getFallbackCommunityCards(): CommunityCard[] {
 export async function addNewsletterSubscriber(email: string, source: string = 'website'): Promise<NewsletterSubscriber | null> {
   try {
     // Try to create new subscriber record directly - more efficient than checking first
-    const record = await newsletterTable.create([
+    const record = await newsletterTable().create([
       {
         fields: {
           Email: email,
@@ -421,7 +429,7 @@ export async function addNewsletterSubscriber(email: string, source: string = 'w
         (error as Error)?.message?.includes('duplicate') ||
         (error as { statusCode?: number })?.statusCode === 422) {
       try {
-        const existingRecords = await newsletterTable
+        const existingRecords = await newsletterTable()
           .select({
             filterByFormula: `{Email} = "${email}"`,
             maxRecords: 1
@@ -444,7 +452,7 @@ export async function addNewsletterSubscriber(email: string, source: string = 'w
 // Fetch all active newsletter subscribers (for admin use)
 export async function fetchNewsletterSubscribers(): Promise<NewsletterSubscriber[]> {
   try {
-    const records = await newsletterTable
+    const records = await newsletterTable()
       .select({
         filterByFormula: "{Status} = 'Active'",
         sort: [{ field: 'Subscribed At', direction: 'desc' }],
@@ -470,7 +478,7 @@ export async function addContactSubmission(
 ): Promise<ContactSubmission | null> {
   try {
     // Create new contact submission record
-    const record = await contactTable.create([
+    const record = await contactTable().create([
       {
         fields: {
           Name: name,
@@ -493,7 +501,7 @@ export async function addContactSubmission(
 // Fetch all contact submissions (for admin use)
 export async function fetchContactSubmissions(): Promise<ContactSubmission[]> {
   try {
-    const records = await contactTable
+    const records = await contactTable()
       .select({
         sort: [{ field: 'Submitted At', direction: 'desc' }],
       })
@@ -515,7 +523,7 @@ export async function updateContactSubmissionStatus(
   status: 'new' | 'reviewed' | 'responded' | 'closed'
 ): Promise<ContactSubmission | null> {
   try {
-    const record = await contactTable.update([
+    const record = await contactTable().update([
       {
         id,
         fields: {

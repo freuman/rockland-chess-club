@@ -17,7 +17,12 @@ const libreBaskerville = Libre_Baskerville({
   display: "swap",
 });
 
+// The staging site at rccc.freuman.com sets NEXT_PUBLIC_SITE_ENV=staging so it
+// stays out of search results and never competes with rocklandchess.org.
+const isStaging = process.env.NEXT_PUBLIC_SITE_ENV === 'staging'
+
 export const metadata: Metadata = {
+  robots: isStaging ? { index: false, follow: false } : undefined,
   title: "Rockland County Chess Club | Chess Community in Rockland County",
   description: "Join the Rockland County Chess Club - a welcoming chess community for players of all skill levels. Events, classes, tournaments, and casual play in Rockland County, NY.",
   keywords: "chess club, Rockland County, chess lessons, chess tournaments, chess community, New York chess",
@@ -50,12 +55,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <script 
-          src="https://zeffy-scripts.s3.ca-central-1.amazonaws.com/embed-form-script.min.js" 
-          async
-        ></script>
-      </head>
       <body className={`${playfairDisplay.variable} ${libreBaskerville.variable} font-serif antialiased`}>
         <div className="flex min-h-screen flex-col">
           <Header />

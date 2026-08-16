@@ -80,7 +80,6 @@ export default function Footer() {
         {/* Club Information */}
         <div className="text-center">
           <div className="elegant-card inline-flex items-center space-x-3 px-8 py-4 mb-6 bg-gradient-to-r from-cream to-amber-100">
-            <div className="chess-piece-decoration text-2xl text-burgundy-600">♔</div>
             <div>
               <Image 
                 src="/favicon-32x32.png" 
@@ -93,7 +92,6 @@ export default function Footer() {
                 Rockland County Chess Club
               </span>
             </div>
-            <div className="chess-piece-decoration text-2xl text-burgundy-600">♔</div>
           </div>
           
           <p className="text-lg text-forest-700 mb-4 italic" style={{fontFamily: 'var(--font-baskerville)'}}>

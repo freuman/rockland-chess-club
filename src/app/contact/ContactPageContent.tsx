@@ -156,7 +156,6 @@ export function ContactPageContent() {
 
             {/* Additional Info */}
             <div className="mt-12 elegant-card p-8 bg-gradient-to-br from-amber-100 to-cream">
-              <div className="chess-piece-decoration text-4xl text-burgundy-600 mb-4">♔</div>
               <h3 className="text-xl font-bold text-burgundy-800 mb-3" style={{fontFamily: 'var(--font-playfair)'}}>
                 Exciting News!
               </h3>
@@ -193,7 +192,6 @@ export function ContactPageContent() {
             
 {isSubmitted ? (
               <div className="elegant-card p-8 text-center">
-                <div className="chess-piece-decoration text-6xl text-amber-600 mb-4">♔</div>
                 <h3 className="text-2xl font-bold text-burgundy-800 mb-4" style={{fontFamily: 'var(--font-playfair)'}}>
                   Message Sent Successfully!
                 </h3>

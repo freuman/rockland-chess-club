@@ -9,17 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
     "airtable": "^0.12.2",
     "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
     "framer-motion": "^12.23.12",
-    "googleapis": "^153.0.0",
-    "lucide-react": "^0.512.0",
     "next": "^16.1.1",
     "react": "^19.0.0",
-    "react-calendar": "^6.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.57.0",
     "tailwind-merge": "^3.3.0"

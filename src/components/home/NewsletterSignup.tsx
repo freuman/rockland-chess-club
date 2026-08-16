@@ -12,7 +12,6 @@ export default function NewsletterSignup() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<NewsletterForm>()
 
   const onSubmit = async (data: NewsletterForm) => {
-    console.log('Form submission started:', data)
     setIsSubmitting(true)
     setError(null)
     
@@ -61,7 +60,6 @@ export default function NewsletterSignup() {
       const airtableSuccess = airtableResponse.status === 'fulfilled'
 
       if (netlifySuccess || airtableSuccess) {
-        console.log('Form submitted successfully')
         setIsSubmitted(true)
         reset()
         
@@ -117,7 +115,6 @@ export default function NewsletterSignup() {
               animate={{ opacity: 1, scale: 1 }}
               className="mt-10 elegant-card max-w-md mx-auto p-6 text-center bg-gradient-to-br from-cream to-amber-100"
             >
-              <div className="chess-piece-decoration text-4xl text-burgundy-600 mb-3">♔</div>
               <h3 className="text-xl font-bold text-burgundy-800 mb-2" style={{fontFamily: 'var(--font-playfair)'}}>
                 Welcome to Our Updates!
               </h3>

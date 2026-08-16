@@ -10,14 +10,36 @@
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
-    X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Branch deploys and PR previews must never be indexed — they would compete
+# with the production site for the same search terms.
+[context.branch-deploy]
+  [context.branch-deploy.environment]
+    NEXT_PUBLIC_SITE_ENV = "staging"
 
-# Form handling
-[functions]
-  directory = "netlify/functions"
+[context.deploy-preview]
+  [context.deploy-preview.environment]
+    NEXT_PUBLIC_SITE_ENV = "staging"
+
+[[context.branch-deploy.headers]]
+  for = "/*"
+  [context.branch-deploy.headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[context.deploy-preview.headers]]
+  for = "/*"
+  [context.deploy-preview.headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Notes on what is deliberately absent:
+#
+# * No `[[redirects]]` catch-all. The previous `/* -> /index.html` rule was
+#   copied from a single-page-app template; a Next.js App Router build produces
+#   no root index.html, so the rule could never have matched. Routing is handled
+#   by @netlify/plugin-nextjs.
+#
+# * No `[functions]` block. It pointed at `netlify/functions`, which does not
+#   exist in this repository. API routes live in src/app/api and are deployed by
+#   the Next.js plugin.

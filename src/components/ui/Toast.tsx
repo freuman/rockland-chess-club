@@ -31,14 +31,37 @@ export default function Toast({ announcements }: ToastProps) {
 
     setIsDismissed(false)
 
-    // Show toast after a 2-second delay so it's less intrusive on page load
-    const showTimeout = setTimeout(() => {
-      if (activeAnnouncements.length > 0) {
-        setIsVisible(true)
-      }
-    }, 2000)
+    if (activeAnnouncements.length === 0) return
 
-    return () => clearTimeout(showTimeout)
+    // Hold the toast until the visitor has scrolled past the hero. On a phone it
+    // is full width, so showing it on load would cover the "first visit" callout
+    // and the primary calls to action — the most important content on the page.
+    const HERO_SCROLL_THRESHOLD = 320
+    const FALLBACK_DELAY_MS = 10000
+
+    function cleanup() {
+      window.removeEventListener('scroll', handleScroll)
+      clearTimeout(fallback)
+    }
+
+    function reveal() {
+      setIsVisible(true)
+      cleanup()
+    }
+
+    function handleScroll() {
+      if (window.scrollY > HERO_SCROLL_THRESHOLD) reveal()
+    }
+
+    // Belt and braces: the scroll listener is the intended trigger, but a timer
+    // guarantees the announcement is still reachable for a visitor who never
+    // scrolls, rather than being suppressed forever.
+    const fallback = setTimeout(reveal, FALLBACK_DELAY_MS)
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // covers a restored scroll position on reload
+
+    return cleanup
   }, [activeAnnouncements.length])
 
   // Auto-rotate announcements
@@ -73,7 +96,7 @@ export default function Toast({ announcements }: ToastProps) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md z-50"
+          className="fixed bottom-4 left-4 right-4 z-50 md:left-auto md:right-4 md:max-w-sm"
         >
           <div className="elegant-card p-4 bg-gradient-to-r from-amber-50 to-cream border-l-4 border-amber-500 shadow-elegant">
             <div className="flex items-start justify-between">

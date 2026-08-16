@@ -3,6 +3,7 @@
 import { MapPinIcon, ClockIcon, UserGroupIcon, TrophyIcon } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function AboutPage() {
   return (
@@ -47,7 +48,6 @@ export default function AboutPage() {
           >
             <div className="elegant-card p-12 bg-gradient-to-br from-amber-100 to-cream">
               <div className="text-center mb-8">
-                <div className="chess-piece-decoration text-4xl text-burgundy-600 mb-4">♔</div>
                 <h2 className="text-4xl font-bold text-burgundy-800 mb-8" style={{fontFamily: 'var(--font-playfair)'}}>Our Mission</h2>
               </div>
               
@@ -78,7 +78,6 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
               <div className="elegant-card p-8 hover:shadow-elegant transition-all duration-300 group">
                 <div className="text-center mb-6">
-                  <div className="chess-piece-decoration text-3xl text-amber-600 mb-4 group-hover:scale-110 transition-transform duration-300">♕</div>
                   <h3 className="text-2xl font-bold text-burgundy-800 mb-4" style={{fontFamily: 'var(--font-playfair)'}}>For New Players</h3>
                 </div>
                 <ul className="space-y-3 text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
@@ -102,7 +101,6 @@ export default function AboutPage() {
               </div>
               <div className="elegant-card p-8 hover:shadow-elegant transition-all duration-300 group">
                 <div className="text-center mb-6">
-                  <div className="chess-piece-decoration text-3xl text-amber-600 mb-4 group-hover:scale-110 transition-transform duration-300">♗</div>
                   <h3 className="text-2xl font-bold text-burgundy-800 mb-4" style={{fontFamily: 'var(--font-playfair)'}}>For Experienced Players</h3>
                 </div>
                 <ul className="space-y-3 text-forest-700" style={{fontFamily: 'var(--font-baskerville)'}}>
@@ -276,7 +274,6 @@ export default function AboutPage() {
             <h2 className="text-4xl font-bold text-burgundy-800 mb-12 text-center" style={{fontFamily: 'var(--font-playfair)'}}>Leadership & Contact</h2>
             <div className="elegant-card p-12 bg-gradient-to-br from-amber-100 to-cream">
               <div className="text-center mb-8">
-                <div className="chess-piece-decoration text-4xl text-burgundy-600 mb-4">♔</div>
               </div>
               <p className="text-lg text-forest-700 mb-6 text-center" style={{fontFamily: 'var(--font-baskerville)'}}>
                 Our club is run by passionate chess enthusiasts who volunteer their time to make our community thrive. 
@@ -285,7 +282,7 @@ export default function AboutPage() {
               <div className="classical-divider my-8"></div>
               <p className="text-forest-700 text-center" style={{fontFamily: 'var(--font-baskerville)'}}>
                 Questions about the club? Want to get involved in leadership? 
-                Reach out to us through our <a href="/contact" className="text-amber-700 hover:text-amber-800 font-semibold transition-colors">contact page</a> 
+                Reach out to us through our <Link href="/contact" className="text-amber-700 hover:text-amber-800 font-semibold transition-colors">contact page</Link>
                 or speak with any of our organizers at a meeting.
               </p>
             </div>
