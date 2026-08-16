@@ -27,7 +27,7 @@ export default function AboutPage() {
             className="mt-6 text-lg leading-8 text-forest-700" 
             style={{fontFamily: 'var(--font-baskerville)'}}
           >
-            Building a welcoming chess community in Rockland County since 2020
+            Building a welcoming chess community in Rockland County since 2017
           </motion.p>
         </div>
       </div>
