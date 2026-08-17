@@ -324,7 +324,7 @@ export function ContactPageContent() {
               <p className="text-forest-700 text-lg" style={{fontFamily: 'var(--font-baskerville)'}}>
                 <strong>70 Main St., 3rd Floor, Nyack, NY 10960</strong>
                 <br />
-                Parking available nearby. Enter through the main entrance and take the elevator to the 3rd floor.
+                Parking available nearby. Enter through the main entrance and go up to the 3rd floor. Stairs only &mdash; there is no elevator.
               </p>
             </div>
           </div>

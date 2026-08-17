@@ -52,8 +52,8 @@ src/
 
 ### Key Features
 1. **Responsive Design**: Mobile-first approach with Tailwind breakpoints
-2. **Event Calendar**: Interactive calendar with filtering by event type
-3. **Membership System**: Integration with Zeffy payment platform
+2. **Event Calendar**: Chess67 calendar embed (see src/lib/chess67.ts)
+3. **Membership System**: Membership tiers managed on Chess67
 4. **Contact Forms**: Netlify Forms for contact and newsletter signup
 5. **Animations**: Framer Motion for enhanced user experience
 6. **SEO Optimized**: Meta tags, Open Graph, and structured data

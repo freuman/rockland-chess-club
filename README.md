@@ -8,7 +8,7 @@ A modern, welcoming website for the Rockland County Chess Club built with Next.j
 - **Dynamic Content**: Real-time content management through Airtable integration
 - **Event Calendar**: Interactive calendar with event filtering by category
 - **Toast Notifications**: Dismissible announcement system with auto-rotation
-- **Membership System**: Integration with Zeffy payment platform
+- **Membership System**: Membership tiers managed on Chess67
 - **Contact Forms**: Dual submission to Netlify Forms and Airtable
 - **Newsletter Management**: Automated subscriber management in Airtable
 - **Photo Galleries**: Curated image collections showcasing club life
@@ -83,7 +83,7 @@ src/
 │   ├── classes/        # Chess classes and instruction
 │   ├── contact/        # Contact form with Airtable integration
 │   ├── events/         # Dynamic events calendar
-│   ├── join/           # Membership and Zeffy integration
+│   ├── join/           # Membership tiers, linking out to Chess67
 │   ├── api/            # API routes for form submissions
 │   └── page.tsx        # Homepage with hero and galleries
 ├── components/
@@ -207,9 +207,9 @@ All forms submit to both Netlify Forms (for backup) and Airtable (for management
 
 - **Homepage** (`/`): Hero with large logo, photo galleries, toast notifications
 - **About** (`/about`): Club mission, community stats, leadership info  
-- **Events** (`/events`): Dynamic calendar with Airtable-powered events
+- **Events** (`/events`): Chess67 calendar embed
 - **Classes** (`/classes`): Instruction offerings and skill level guidance
-- **Join** (`/join`): Membership tiers with Zeffy payment integration
+- **Join** (`/join`): Membership tiers, joined via Chess67
 - **Contact** (`/contact`): Contact form with social media links
 
 ## 🔧 Content Management

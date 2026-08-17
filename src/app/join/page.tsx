@@ -34,7 +34,7 @@ const faqs = [
   {
     question: 'Is parking available?',
     answer:
-      'Yes — street parking on Main St. and nearby municipal lots. The venue is on the 3rd floor; take the elevator or stairs from the main entrance.',
+      'Yes — street parking on Main St. and nearby municipal lots. Please note the venue is on the 3rd floor and is reached by stairs only; there is no elevator. Get in touch if that is a problem and we will do what we can.',
   },
   {
     question: 'What age groups participate?',
